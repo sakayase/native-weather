@@ -1,15 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-
+import Today from './components/Today';
+import axios from 'axios';
+import AppLoading from 'expo-app-loading';
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+  const [weather, setWeather] = useState({})
+
+  const latitude = 50.433333
+  const longitude = 2.833333
+
+  useEffect(() => {
+    axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&lang=fr&exclude=minutely,hourly,alerts&appid=bf0439822962000f841efcbf28142ab8`)
+      .then(res => {
+        setWeather(res.data);
+      })
+  }, [])
+
+
+
+  if (weather.current) {
+    const currentWeather = weather.current;
+    return (
+      <View style={styles.container}>
+        <Today current={currentWeather} />
+      </View>
+    );
+  } else {
+    console.log('test')
+    return <AppLoading />
+  }
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
