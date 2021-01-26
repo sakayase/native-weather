@@ -12,7 +12,7 @@ export default function App() {
   const longitude = 2.833333
 
   useEffect(() => {
-    axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&lang=fr&exclude=minutely,hourly,alerts&appid=bf0439822962000f841efcbf28142ab8`)
+    axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&lang=fr&exclude=minutely,hourly,alerts&appid=`) //appid à rajouter
       .then(res => {
         setWeather(res.data);
       })
