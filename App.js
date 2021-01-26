@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import Today from './components/Today';
 import axios from 'axios';
 import AppLoading from 'expo-app-loading';
+import Day from './components/Day';
 export default function App() {
 
   const [weather, setWeather] = useState({})
@@ -17,17 +18,32 @@ export default function App() {
       })
   }, [])
 
-
+  const showMenu = () => {
+    console.log('hey')
+  }
 
   if (weather.current) {
     const currentWeather = weather.current;
+
+    const nextDaysJSX = weather.daily.map(
+      day => {
+        return <Day key={day.dt} day={day}/>
+      }
+    )
+
     return (
-      <View style={styles.container}>
-        <Today current={currentWeather} />
-      </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.todayView}>
+          <Today current={currentWeather} />
+        </View>
+        <View style={styles.dayListView}>
+          <ScrollView >
+            {nextDaysJSX}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     );
   } else {
-    console.log('test')
     return <AppLoading />
   }
 }
@@ -41,4 +57,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  todayView: {
+    flex: 2,
+    backgroundColor: "#2b53e3",
+    width: "100%",
+  },
+  dayListView: {
+    flex: 6,
+    width: "100%",
+  }
 });
